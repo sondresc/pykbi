@@ -18,21 +18,21 @@ import pykbi
 data = np.loadtxt("rdf1.txt")
 
 
-rdf11 = pykbi.RDF(data[:,0],data[:,1], name="rdf_11")
-rdf22 = pykbi.RDF(data[:,0],data[:,2], name="rdf_22")
-rdf33 = pykbi.RDF(data[:,0],data[:,3], name="rdf_33")
+rdf11 = pykbi.RDF(data[:,0],data[:,1], closed=True, name="rdf_11")
+rdf22 = pykbi.RDF(data[:,0],data[:,2], closed=True, name="rdf_22")
+rdf33 = pykbi.RDF(data[:,0],data[:,3], closed=True, name="rdf_33")
 
 
 # we integrate them using the closed integration methods
-rdf11.Integrate("closed")
-rdf22.Integrate("closed")
-rdf33.Integrate("closed")
+rdf11.Integrate()
+rdf22.Integrate()
+rdf33.Integrate()
 
 ## and we read out the value of the integral. if no argument is given, this is done
 # in the last point in the integral
-rdf11.FindValues(position=(0.2,0.4))
-rdf22.FindValues(position=(0.2,0.4))
-rdf33.FindValues(position=(0.2,0.4))
+rdf11.FindValues(position=(0.35,0.45))
+rdf22.FindValues(position=(0.35,0.45))
+rdf33.FindValues(position=(0.35,0.45))
 
 # Then print the values
 #print("Value of KBI at end of integral for '{}': {}".format(rdf.name, rdf.ReturnKBI()))

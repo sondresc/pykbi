@@ -19,12 +19,12 @@ lt = 14.8245984505
 
 data = np.loadtxt("rdf1.txt")
 
-rdf11 = pykbi.RDF(data[:,0],data[:,1], npart=1200, box_size=lt, eqint=True, name="rdf_11")
-rdf22 = pykbi.RDF(data[:,0],data[:,2], npart=600, box_size=lt, eqint=True, name="rdf_22")
-rdf33 = pykbi.RDF(data[:,0],data[:,3], npart=600, box_size=lt, eqint=True, name="rdf_33")
-rdf12 = pykbi.RDF(data[:,0],data[:,4], npart=1200, box_size=lt, eqint=False, name="rdf_12")
-rdf13 = pykbi.RDF(data[:,0],data[:,5], npart=1200, box_size=lt, eqint=False, name="rdf_13")
-rdf23 = pykbi.RDF(data[:,0],data[:,6], npart=600, box_size=lt, eqint=False, name="rdf_23")
+rdf11 = pykbi.RDF(data[:,0],data[:,1], closed=False, npart=1200, box_size=lt, eqint=True, name="rdf_11")
+rdf22 = pykbi.RDF(data[:,0],data[:,2], closed=False, npart=600, box_size=lt, eqint=True, name="rdf_22")
+rdf33 = pykbi.RDF(data[:,0],data[:,3], closed=False, npart=600, box_size=lt, eqint=True, name="rdf_33")
+rdf12 = pykbi.RDF(data[:,0],data[:,4], closed=False, npart=1200, box_size=lt, eqint=False, name="rdf_12")
+rdf13 = pykbi.RDF(data[:,0],data[:,5], closed=False, npart=1200, box_size=lt, eqint=False, name="rdf_13")
+rdf23 = pykbi.RDF(data[:,0],data[:,6], closed=False, npart=600, box_size=lt, eqint=False, name="rdf_23")
 
 rdf11_vdw = pykbi.CorrectVanDerVegt(rdf11)
 rdf22_vdw = pykbi.CorrectVanDerVegt(rdf22)
@@ -35,12 +35,12 @@ rdf23_vdw = pykbi.CorrectVanDerVegt(rdf23)
 
 
 # we integrate them using the closed integration methods
-rdf11_vdw.Integrate("closed")
-rdf22_vdw.Integrate("closed")
-rdf33_vdw.Integrate("closed")
-rdf12_vdw.Integrate("closed")
-rdf13_vdw.Integrate("closed")
-rdf23_vdw.Integrate("closed")
+rdf11_vdw.Integrate()
+rdf22_vdw.Integrate()
+rdf33_vdw.Integrate()
+rdf12_vdw.Integrate()
+rdf13_vdw.Integrate()
+rdf23_vdw.Integrate()
 
 ## and we read out the value of the integral. if no argument is given, this is done
 # in the last point in the integral

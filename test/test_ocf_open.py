@@ -22,10 +22,10 @@ range_data = np.linspace(0.001, 250, 10000)
 # then we generate the function, based on the input
 gr = pykbi.odf(range_data, chi=2.0)
 
-rdf = pykbi.RDF(range_data, gr, name="ODF, chi=2.0")
+rdf = pykbi.RDF(range_data, gr, closed=False, name="ODF, chi=2.0")
 
 # we integrate the function using the open integration method.
-rdf.Integrate("open")
+rdf.Integrate()
 
 ## and we read out the value of the integral. if no argument is given, this is done
 # in the last point in the integral

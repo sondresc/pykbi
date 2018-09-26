@@ -24,6 +24,8 @@ class RDF:
 
     :param gr: ndarray containing the g(r) function for _one_ interaction.
 
+    :param closed: is system closed or open?
+
     :param npart: how many of this component? If it is a X-Y interaction, use
     one as a reference.
 
@@ -37,13 +39,19 @@ class RDF:
 
 
     """
-    def __init__(self, radial_dist, radial_dist_func,
+    def __init__(self, radial_dist, radial_dist_func, closed=True,
                  npart=None, box_size=None, eqint=None, name=None):
 
         self.npart = npart
 
         self.gr = radial_dist_func
         self.r = radial_dist
+
+        if closed:
+            self.integral_type = "closed"
+        else:
+            self.integral_type = "open"
+
 
         self.eqint = eqint
 
@@ -64,9 +72,6 @@ class RDF:
         ## here we store the result from the interpolation
         self.integral_value = None
 
-        ## set this to be the type of integral we have performed. this is convenient when we look at
-        # how to extract data from the system
-        self.integral_type = None
 
 
     def PrintState(self):
@@ -137,21 +142,17 @@ class RDF:
         self.volume = lt**3
 
 
-    def Integrate(self, itype):
+    def Integrate(self):
         """
-        Integrate the rdf-data, and use either the open or close integration method
+        Integrate the rdf-data, use either open or closed integration method
         """
 
-        if itype is None:
-            print("Integration type not specified. Set the integraion")
-            return
-
-        if itype == "open":
+        if self.integral_type == "open":
             self._IntegrateOpenSystem()
-        elif itype == "closed":
+        elif self.integral_type == "closed":
             self._IntegrateClosedSystem()
         else:
-            print("'{}' is unknown integration type.".format(itype))
+            print("'{}' is unknown integration type.".format(self.integral_type))
 
 
 
@@ -169,8 +170,6 @@ class RDF:
         h = self.gr - 1.0
 
         self.kbi = 4.0 * np.pi * scipy.integrate.cumtrapz(h * self.r**2, self.r)
-
-        self.integral_type = "open"
 
 
     def _IntegrateClosedSystem(self):
@@ -198,8 +197,6 @@ class RDF:
                 self.r[:i])
 
         self.kbi *= 4.0 * np.pi
-
-        self.integral_type = "closed"
 
 
     def FindValues(self, position=None):

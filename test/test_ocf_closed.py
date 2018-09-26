@@ -25,7 +25,7 @@ gr = pykbi.odf(range_data, chi=2.0)
 rdf = pykbi.RDF(range_data, gr, name="ODF, chi=2.0")
 
 # we integrate the function using the open integration method.
-rdf.Integrate("closed")
+rdf.Integrate()
 
 ## and we read out the value of the integral. if no argument is given, this is done
 # in the last point in the integral
