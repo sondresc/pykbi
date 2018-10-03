@@ -263,6 +263,7 @@ class RDF:
 
             if position[1] is None:
                 print("\n Upper limit has to be set when we read out values from closed system.\n ")
+                self.integral_value = None
                 return
             else:
                 if position[1] > r_inverse[0]:
