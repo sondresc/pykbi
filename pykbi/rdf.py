@@ -378,6 +378,8 @@ class RDF:
         json_data = self.integral_value.copy()
         json_data["gr"] = self.gr.tolist()
         json_data["r"] = self.r.tolist()
+        json_data["rint"] = self.rint.tolist()
+        json_data["kbi"] = self.kbi.tolist()
 
         with open(fname, 'w') as outfile:
             json.dump(json_data, outfile, indent=2)
