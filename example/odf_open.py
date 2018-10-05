@@ -59,4 +59,7 @@ rdf.PlotReadout(ax2)
 
 ax1.set_xlim(0.0, 5.0)
 
+# write the data to a json-file
+rdf.SaveToJSON("ocf_open.json")
+
 plt.show()

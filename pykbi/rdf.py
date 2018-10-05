@@ -11,6 +11,7 @@ Work with rdfs and Kirkwood-Buff integrals.
 import scipy.integrate
 import scipy.stats
 import numpy as np
+import json
 
 
 __all__ = ["RDF"]
@@ -44,8 +45,15 @@ class RDF:
 
         self.npart = npart
 
-        self.gr = radial_dist_func
-        self.r = radial_dist
+        if isinstance(radial_dist_func, np.ndarray):
+            self.gr = radial_dist_func
+        else:
+            raise TypeError("RDF: 'radial_dist_func' must be numpy.ndarray")
+
+        if isinstance(radial_dist, np.ndarray):
+            self.r = radial_dist
+        else:
+            raise TypeError("RDF: 'radial_dist' must be numpy.ndarray")
 
         if closed:
             self.integral_type = "closed"
@@ -353,3 +361,25 @@ class RDF:
 
             #axrange = np.linspace(0.0, self.integral_value["value_limit"][1], 300)
             #axhandle.plot(axrange, self.ReturnKBI() + self.integral_value["slope"] * axrange, "--")
+
+    def SaveToJSON(self, fname):
+        """
+        Save the result from the self.integral data-structure to a json-file.
+        """
+
+        # add the json-ending to the json file
+        if ".json" not in fname:
+            fname += ".json"
+
+        if self.integral_value == None:
+            print("No integral data yet.")
+            return
+
+        json_data = self.integral_value.copy()
+        json_data["gr"] = self.gr.tolist()
+        json_data["r"] = self.r.tolist()
+
+        with open(fname, 'w') as outfile:
+            json.dump(json_data, outfile, indent=2)
+
+
