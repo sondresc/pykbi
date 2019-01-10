@@ -1,7 +1,10 @@
 #! /usr/bin/env python3
 
 """
-Work with rdfs and Kirkwood-Buff integrals.
+A set of tools to work with Radial distribution functions, and Kirkwood-Buff integrals.
+
+Radial distribution functions are regularly obtained from molecular simulations, and
+can be used to.
 
 """
 #pylint: disable=invalid-name
@@ -16,28 +19,27 @@ import json
 
 __all__ = ["RDF"]
 
+
+## this function is to help with a quirk in the json dumping of numpy ints
+def default(o):
+    if isinstance(o, np.int64): return int(o)
+    print(type(o))
+    raise TypeError
+
+
 class RDF:
     """
-    Class to hold rdfs
+    Class to contain and work with radial distribution functions.
 
-    :param r: ndarray containing the r-distance vector. This has to be a 1D
-    ndarray, and must have the same lenght as the g(r) vector.
+    This class is intended to work with radial distribution functions. We initiate the
+    radial distribution function, and can integrate them based on the state of teh system,
+    considering it being open or closed.
 
-    :param gr: ndarray containing the g(r) function for _one_ interaction.
-
-    :param closed: is system closed or open?
-
-    :param npart: how many of this component? If it is a X-Y interaction, use
-    one as a reference.
-
-    :param lt: sidelenght of simulation box. It is always assumed the system is
-    a cube.
-
-    :param eqint: if we have a X-X type interaction this is True. otherwise it
-    is False.
-
-    :param name: What label should we put on this.
-
+    Parameters
+    ----------
+    radial_dist : numpy.ndarray
+        A numpy.ndarray to hold the radial distance.
+    radial_dist_func : numpy.ndarray
 
     """
     def __init__(self, radial_dist, radial_dist_func, closed=True,
@@ -306,16 +308,16 @@ class RDF:
 
 
 
-    def PlotRDF(self, axhandle):
+    def PlotRDF(self, axhandle, kwargs={}):
         """
         Function to plot the rdf
 
         """
 
-        axhandle.plot(self.r, self.gr)
+        axhandle.plot(self.r, self.gr, **kwargs)
 
 
-    def PlotKBI(self, axhandle):
+    def PlotKBI(self, axhandle, kwargs={}):
         """
         Function to plot the KB
         """
@@ -323,10 +325,10 @@ class RDF:
         if self.kbi is None:
             print("No integral present in this dataset")
 
-        axhandle.plot(self.rint, self.kbi, label=self.name)
+        axhandle.plot(self.rint, self.kbi, **kwargs)
 
 
-    def PlotKBIInverse(self, axhandle):
+    def PlotKBIInverse(self, axhandle, kwargs={}):
         """
         Plot the inverse of the KB-integral
         """
@@ -334,10 +336,10 @@ class RDF:
         if self.kbi is None:
             print("No integral present in this dataset")
 
-        axhandle.plot(1.0/self.rint, self.kbi, label=self.name)
+        axhandle.plot(1.0/self.rint, self.kbi, **kwargs)
 
 
-    def PlotReadout(self, axhandle):
+    def PlotReadout(self, axhandle, kwargs={}):
         """
         Plot the positions where the data extrapolated or readout was done
         """
@@ -348,7 +350,7 @@ class RDF:
 
         if self.integral_type == "open":
             # we have only a single point
-            axhandle.plot(self.integral_value["rint_value"], self.ReturnKBI(), "o")
+            axhandle.plot(self.integral_value["rint_value"], self.ReturnKBI(), "o", **kwargs)
 
         elif self.integral_type == "closed":
             #print(self.integral_value.keys())
@@ -356,8 +358,8 @@ class RDF:
 
             r_inverse = 1.0 / self.rint
 
-            axhandle.plot(r_inverse[index], self.kbi[index], "o-")
-            axhandle.plot(0.0, self.ReturnKBI(), "s")
+            axhandle.plot(r_inverse[index], self.kbi[index], "o-", **kwargs)
+            axhandle.plot(0.0, self.ReturnKBI(), "s", **kwargs)
 
             #axrange = np.linspace(0.0, self.integral_value["value_limit"][1], 300)
             #axhandle.plot(axrange, self.ReturnKBI() + self.integral_value["slope"] * axrange, "--")
@@ -373,6 +375,7 @@ class RDF:
 
         if self.integral_value == None:
             print("No integral data yet.")
+            print("Use FindValues function to read out values.")
             return
 
         json_data = self.integral_value.copy()
@@ -380,8 +383,9 @@ class RDF:
         json_data["r"] = self.r.tolist()
         json_data["rint"] = self.rint.tolist()
         json_data["kbi"] = self.kbi.tolist()
+        json_data["value_limit"] = json_data["value_limit"].tolist()
 
         with open(fname, 'w') as outfile:
-            json.dump(json_data, outfile, indent=2)
+            json.dump(json_data, outfile, indent=2, default=default)
 
 

@@ -10,3 +10,5 @@ from .rdf import *
 from .odf import *
 from .fscorr import *
 from .fct import *
+
+__version__ = "1.0.0"

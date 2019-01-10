@@ -56,7 +56,7 @@ def CorrectInverseN(rdf1, rdf2):
     out_rdf = _rdf.RDF(rdfref.r.copy(),
                        rdfref.gr-correction_mask,
                        npart=rdfref.npart,
-                       box_size=rdfref.Lt,
+                       box_size=rdfref.lt,
                        eqint=rdfref.eqint,
                        name=rdfref.name+" invN-corrected")
 
