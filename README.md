@@ -14,6 +14,8 @@ function available as vectors. The integral can be done for both open and
 closed systems.  In addition, it has included correction methods to correct for
 finite-size effects.
 
+This package accompanies the paper "Kirkwood-Buff integrals from molecular simulation"
+\[[3](#dawass2019)\].
 
 ## Installation
 
@@ -40,3 +42,4 @@ python setup.py install
 ## References
 1. <a name="KB1951" />[J. G. Kirkwood and F. P. Buff, *J. Chem. Phys.* **19**, 774(1951).](https://doi.org/10.1063/1.1748352)
 1. <a name="Kruger2013" />[P. Kruger, S. K. Schnell, D. Bedeaux, S. Kjelstrup, T. J. H. Vlugt, J.-M. Simon, *J. Phys. Chem. Lett.* **4**, 2(2013).](https://doi.org/10.1021/jz301992u)
+1. <a name="dawass2019" />[N. Dawass, P. Kruger, S. K. Schnell, J.-M. Simon, T. J. H. Vlugt, *Fluid Phase Equilibria* **486**, (2019).](https://doi.org/10.1016/j.fluid.2018.12.027)
