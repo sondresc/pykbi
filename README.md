@@ -1,5 +1,8 @@
 # pykbi: Python module to work on radial distribution functions and Kirkwood-Buff integrals
 
+[![PyPI version](https://badge.fury.io/py/pykbi.svg)](https://badge.fury.io/py/pykbi)
+[![Build Status](https://travis-ci.com/sondresc/pykbi.svg?branch=master)](https://travis-ci.com/sondresc/pykbi)
+
 Kirkwood-Buff theory bridges microscopic structure and macroscopic properties
 of isotropic liquids. The classical version of the theory deals with open and infinite
 systems\[[1](#KB1951)\], while the new correction allows us to work on closed and finite
